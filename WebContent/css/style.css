@@ -79,6 +79,15 @@ button {
     padding-left: 2%;
     padding-bottom: 28px;
     margin-bottom: 15px;
-    color: #155724;
-    background-color: #d4edda;
+    color: #FFFAFA;
+    background-color: #155357;
+}
+#flush_error {
+    width: 100%;
+    padding-top: 28px;
+    padding-left: 2%;
+    padding-bottom: 28px;
+    margin-bottom: 15px;
+    color: #FFFAFA;
+    background-color: #571549;
 }
