@@ -30,21 +30,39 @@ public class IndexServlet extends HttpServlet {
     }
 
     /**
-     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+     *      response)
      */
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         EntityManager em = DBUtil.createEntityManager();
 
-        List<Tasks> tasks = em.createNamedQuery("getAllTasks", Tasks.class).getResultList();
+        int page = 1;
+        try {
+            page = Integer.parseInt(request.getParameter("page"));
+        } catch (NumberFormatException e) {
+        }
+
+        List<Tasks> tasks = em.createNamedQuery("getAllTasks", Tasks.class).setFirstResult(10 * (page - 1))
+                .setMaxResults(10).getResultList();
+
+
+        long tasks_count = (long) em.createNamedQuery("getTasksCount", Long.class).getSingleResult();
 
         em.close();
 
         request.setAttribute("tasks", tasks);
+        request.setAttribute("tasks_count", tasks_count); // 全件数
+        request.setAttribute("page", page);
+
+        if (request.getSession().getAttribute("flush") != null) {
+
+            request.setAttribute("flush", request.getSession().getAttribute("flush"));
+            request.getSession().removeAttribute("flush");
+        }
 
         RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/tasks/index.jsp");
         rd.forward(request, response);
     }
-
-
 
 }
