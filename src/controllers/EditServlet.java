@@ -29,22 +29,21 @@ public class EditServlet extends HttpServlet {
     }
 
     /**
-     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+     *      response)
      */
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         EntityManager em = DBUtil.createEntityManager();
-
 
         Tasks t = em.find(Tasks.class, Integer.parseInt(request.getParameter("id")));
 
         em.close();
 
-
-        request.setAttribute("Tasks", t);
+        request.setAttribute("tasks", t);
         request.setAttribute("_token", request.getSession().getId());
 
-
-        if(t != null) {
+        if (t != null) {
             request.getSession().setAttribute("tasks_id", t.getId());
         }
 
